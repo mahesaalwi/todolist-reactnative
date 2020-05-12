@@ -1,97 +1,52 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Image, Alert} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Image} from 'react-native';
 import Logos from '../images/logo.png';
 import {Form, Item, Input, Button, Text} from 'native-base';
-import firebase from '../databases/index';
 
-export default class login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      displayName: '',
-      email: '',
-      password: '',
-      isLoading: false,
-    };
-  }
+const signup = ({navigation}) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.textheader}>
+        Hello <Text style={styles.txtusers}>Users</Text>
+      </Text>
+      <Text style={styles.textbottom}>Create Acount</Text>
+      <Text style={styles.textname}>Please sign up to continue</Text>
 
-  updateInputVal = (val, prop) => {
-    const state = this.state;
-    state[prop] = val;
-    this.setState(state);
-  };
+      <Image style={styles.tinyLogo} source={Logos} />
 
-  registerUser = () => {
-    if (this.state.email === '' && this.state.password === '') {
-      Alert.alert('Enter details to signup !');
-    } else {
-      this.setState({
-        isLoading: true,
-      });
-      firebase
-        .auth()
-        .createUserWithEmailPassword(this.state.email, this.state.password)
-        .then(res => {
-          res.user.updateProfile({
-            displayName: this.state.displayName,
-          });
-          console.log('User Registered successfully !');
-          this.setState({
-            isLoading: false,
-            displayName: '',
-            email: '',
-            password: '',
-          });
-          this.props.navigation.navigate('login');
-        });
-    }
-  };
+      <Form style={styles.forminput}>
+        <Item regular>
+          <Input
+            style={styles.txtinput}
+            placeholder="Nama pengguna username atau email"
+          />
+        </Item>
+        <Item regular style={styles.pwd}>
+          <Input style={styles.txtinput} placeholder="Username" />
+        </Item>
+        <Item regular style={styles.pwd}>
+          <Input
+            style={styles.txtinput}
+            placeholder="Kata Sandi"
+            secureTextEntry={true}
+          />
+        </Item>
+        <Button style={styles.btnlogin}>
+          <Text style={styles.text}>Buat Akun</Text>
+        </Button>
+      </Form>
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.textheader}>
-          Hello <Text style={styles.txtusers}>Users</Text>
+      <Text style={styles.Signup}>
+        Sudah punya akun?{' '}
+        <Text
+          style={styles.txtsecond}
+          onPress={() => navigation.navigate('login')}>
+          Masuk disini
         </Text>
-        <Text style={styles.textbottom}>Create Acount</Text>
-        <Text style={styles.textname}>Please sign up to continue</Text>
-
-        <Image style={styles.tinyLogo} source={Logos} />
-
-        <Form style={styles.forminput}>
-          <Item regular>
-            <Input
-              style={styles.txtinput}
-              placeholder="Nama pengguna username atau email"
-            />
-          </Item>
-          <Item regular style={styles.pwd}>
-            <Input style={styles.txtinput} placeholder="Username" />
-          </Item>
-          <Item regular style={styles.pwd}>
-            <Input
-              style={styles.txtinput}
-              placeholder="Kata Sandi"
-              secureTextEntry={true}
-            />
-          </Item>
-          <Button style={styles.btnlogin}>
-            <Text style={styles.text}>Buat Akun</Text>
-          </Button>
-        </Form>
-
-        <Text style={styles.Signup}>
-          Sudah punya akun?{' '}
-          <Text
-            style={styles.txtsecond}
-            onPress={() => this.props.navigation.navigate('login')}>
-            Masuk disini
-          </Text>
-        </Text>
-      </View>
-    );
-  }
-}
+      </Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   forminput: {
@@ -158,3 +113,5 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
+export default signup;
